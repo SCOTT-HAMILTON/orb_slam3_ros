@@ -257,3 +257,11 @@ install(DIRECTORY launch/
   PATTERN "*.launch"
   PATTERN ".git" EXCLUDE
 )
+
+install(FILES orb_slam3/Vocabulary/ORBvoc.txt.bin
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/orb_slam3/Vocabulary
+)
+
+install(DIRECTORY config/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)
