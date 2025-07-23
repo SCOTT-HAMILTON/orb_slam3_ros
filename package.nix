@@ -7,8 +7,8 @@ buildRosPackage {
   src = fetchFromGitHub {
     owner = "SCOTT-HAMILTON";
     repo = "orb_slam3_ros";
-    rev = "84a20dbd02b6aad480e360ced229002f33d28a3b";
-    sha256 = "sha256-bUGxfeIGrfznsB3ptKkzQKd4Vg3ZJ1Rm6ZZwtnt8vkc=";
+    rev = "0e73edcca7a235175ab4e62d9b800385d74d64bc";
+    sha256 = "sha256-r4iCvqn6HZaNz6Sd66PEzobk80XXVcFadvXQHIITCAc=";
   };
 
   buildType = "catkin";
