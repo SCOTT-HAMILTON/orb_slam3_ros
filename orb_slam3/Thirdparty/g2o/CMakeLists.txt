@@ -147,3 +147,8 @@ ${g2o_SOURCE_DIR}/g2o/stuff/string_tools.cpp
 ${g2o_SOURCE_DIR}/g2o/stuff/property.cpp       
 ${g2o_SOURCE_DIR}/g2o/stuff/property.h       
 )
+
+install(TARGETS g2o
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION} # For static libraries, good practice to include
+)
