@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   tf
   tf2
+  visualization_msgs
   message_generation
 )
 
