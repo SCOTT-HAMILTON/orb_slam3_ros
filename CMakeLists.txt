@@ -226,3 +226,9 @@ target_link_libraries(ros_rgbd_inertial
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
+
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  PATTERN "*.launch"
+  PATTERN ".git" EXCLUDE
+)
