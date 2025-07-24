@@ -4,13 +4,13 @@ buildRosPackage {
   pname = "ros-noetic-orb-slam3-ros";
   version = "0.0.1";
 
-  # src = fetchFromGitHub {
-  #   owner = "SCOTT-HAMILTON";
-  #   repo = "orb_slam3_ros";
-  #   rev = "0e73edcca7a235175ab4e62d9b800385d74d64bc";
-  #   sha256 = "sha256-r4iCvqn6HZaNz6Sd66PEzobk80XXVcFadvXQHIITCAc=";
-  # };
-  src = ./.;
+  src = fetchFromGitHub {
+    owner = "SCOTT-HAMILTON";
+    repo = "orb_slam3_ros";
+    rev = "55ab478a38ed2f694d3eaa9b99fe0749739ed241";
+    sha256 = "sha256-/mHbfcTx1PHNLsNv3mSQOi3ynLrON5LPYFiet9acLX8=";
+  };
+  # src = ./.;
 
   buildType = "catkin";
   buildInputs = [ catkin message-generation eigen ];
