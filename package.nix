@@ -17,6 +17,11 @@ buildRosPackage {
   propagatedBuildInputs = [ cv-bridge dynamic-reconfigure image-transport message-runtime nav-msgs roscpp rospy sensor-msgs std-msgs tf tf2-geometry-msgs tf2-ros visualization-msgs pangolin ];
   nativeBuildInputs = [ catkin ];
 
+  dontStrip = true;
+  NIX_CFLAGS_COMPILE = "-Og";
+  NIX_CXXFLAGS_COMPILE = "-Og";
+
+
   meta = {
     description = "ORB SLAM3 ROS implementation.";
     license = with lib.licenses; [ bsdOriginal ];
