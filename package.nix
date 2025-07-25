@@ -20,10 +20,6 @@ buildRosPackage {
   dontStrip = true;
   NIX_CFLAGS_COMPILE = "-Og";
   NIX_CXXFLAGS_COMPILE = "-Og";
-  # NIX_CFLAGS_COMPILE = "-fsanitize=address -fno-omit-frame-pointer -O1 -g";
-  # NIX_CXXFLAGS_COMPILE = "-fsanitize=address -fno-omit-frame-pointer -O1 -g";
-  # NIX_LDFLAGS = "-fsanitize=address";
-
 
   meta = {
     description = "ORB SLAM3 ROS implementation.";
