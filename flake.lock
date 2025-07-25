@@ -119,15 +119,15 @@
       "locked": {
         "lastModified": 1753483444,
         "narHash": "sha256-ygI4GxXDwoysRgArKIwe4asGDpTiNuJA1WMwtxNYfV0=",
-        "ref": "refs/heads/master",
+        "owner": "SCOTT-HAMILTON",
+        "repo": "orb_slam3",
         "rev": "d3b5c087fa93b89ff109136315e6c67e22d91ed7",
-        "revCount": 3,
-        "type": "git",
-        "url": "file:/home/scott/GIT/orb_slam3"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:/home/scott/GIT/orb_slam3"
+        "owner": "SCOTT-HAMILTON",
+        "repo": "orb_slam3",
+        "type": "github"
       }
     },
     "root": {
