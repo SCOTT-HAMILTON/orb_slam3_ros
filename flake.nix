@@ -3,7 +3,8 @@
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";  # IMPORTANT!!!
     orb-slam3-flake = {
-      url = "git+file:/home/scott/GIT/orb_slam3";
+      # url = "git+file:/home/scott/GIT/orb_slam3";
+      url = "github:SCOTT-HAMILTON//orb_slam3";
       inputs.nixpkgs.follows = "nix-ros-overlay/nixpkgs";  # IMPORTANT!!!
     };
   };
