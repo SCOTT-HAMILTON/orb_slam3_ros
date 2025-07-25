@@ -22,7 +22,7 @@ public:
 class ImageGrabber
 {
 public:
-    ImageGrabber(ImuGrabber *pImuGb): mpImuGb(pImuGb){}
+    ImageGrabber(ImuGrabber *pImuGb): mpImuGb(pImuGb), mStopSyncThread(false) {}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
     cv::Mat GetImage(const sensor_msgs::ImageConstPtr &img_msg);

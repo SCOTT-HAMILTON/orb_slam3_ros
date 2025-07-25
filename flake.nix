@@ -2,8 +2,12 @@
   inputs = {
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";  # IMPORTANT!!!
+    orb-slam3-flake = {
+      url = "git+file:/home/scott/GIT/orb_slam3";
+      inputs.nixpkgs.follows = "nix-ros-overlay/nixpkgs";  # IMPORTANT!!!
+    };
   };
-  outputs = { self, nix-ros-overlay, nixpkgs }:
+  outputs = { self, nix-ros-overlay, nixpkgs, orb-slam3-flake }:
     nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -14,6 +18,7 @@
       in {
         packages.default = pkgs.rosPackages.noetic.callPackage ./package.nix {
           inherit pangolin;
+          orb-slam3 = orb-slam3-flake.packages.${system}.default;
         };
       });
   nixConfig = {

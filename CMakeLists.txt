@@ -75,97 +75,28 @@ catkin_package (
   LIBRARIES {PROJECT_NAME} libDBoW2 libg2o
 )
 
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ORB_SLAM3 REQUIRED ORB_SLAM3)
+
+execute_process(
+  COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=prefix ORB_SLAM3
+  OUTPUT_VARIABLE ORB_SLAM3_PREFIX
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+set(ORB_SLAM3_VOCAB_PATH "${ORB_SLAM3_PREFIX}/share/orb_slam3/Vocabulary/ORBvoc.txt.bin")
+message(STATUS "ORB_SLAM3_VOCAB_PATH: ${ORB_SLAM3_VOCAB_PATH}")
+
 include_directories(
   ${PROJECT_SOURCE_DIR}
   ${PROJECT_SOURCE_DIR}/include
-  ${PROJECT_SOURCE_DIR}/orb_slam3
-  ${PROJECT_SOURCE_DIR}/orb_slam3/include
-  ${PROJECT_SOURCE_DIR}/orb_slam3/include/CameraModels
-  ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty
-  ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/Sophus
+  ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
   ${Pangolin_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
+  ${ORB_SLAM3_INCLUDE_DIRS}
 )
 
-include(${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/DBoW2/CMakeLists.txt)
-include(${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/g2o/CMakeLists.txt)
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/orb_slam3/lib)
-
-add_library(${PROJECT_NAME} SHARED
-  orb_slam3/src/System.cc
-  orb_slam3/src/Tracking.cc
-  orb_slam3/src/LocalMapping.cc
-  orb_slam3/src/LoopClosing.cc
-  orb_slam3/src/ORBextractor.cc
-  orb_slam3/src/ORBmatcher.cc
-  orb_slam3/src/FrameDrawer.cc
-  orb_slam3/src/Converter.cc
-  orb_slam3/src/MapPoint.cc
-  orb_slam3/src/KeyFrame.cc
-  orb_slam3/src/Atlas.cc
-  orb_slam3/src/Map.cc
-  orb_slam3/src/MapDrawer.cc
-  orb_slam3/src/Optimizer.cc
-  orb_slam3/src/Frame.cc
-  orb_slam3/src/KeyFrameDatabase.cc
-  orb_slam3/src/Sim3Solver.cc
-  orb_slam3/src/Viewer.cc
-  orb_slam3/src/ImuTypes.cc
-  orb_slam3/src/G2oTypes.cc
-  orb_slam3/src/CameraModels/Pinhole.cpp
-  orb_slam3/src/CameraModels/KannalaBrandt8.cpp
-  orb_slam3/src/OptimizableTypes.cpp
-  orb_slam3/src/MLPnPsolver.cpp
-  orb_slam3/src/GeometricTools.cc
-  orb_slam3/src/TwoViewReconstruction.cc
-  orb_slam3/src/Config.cc
-  orb_slam3/src/Settings.cc
-  orb_slam3/include/System.h
-  orb_slam3/include/Tracking.h
-  orb_slam3/include/LocalMapping.h
-  orb_slam3/include/LoopClosing.h
-  orb_slam3/include/ORBextractor.h
-  orb_slam3/include/ORBmatcher.h
-  orb_slam3/include/FrameDrawer.h
-  orb_slam3/include/Converter.h
-  orb_slam3/include/MapPoint.h
-  orb_slam3/include/KeyFrame.h
-  orb_slam3/include/Atlas.h
-  orb_slam3/include/Map.h
-  orb_slam3/include/MapDrawer.h
-  orb_slam3/include/Optimizer.h
-  orb_slam3/include/Frame.h
-  orb_slam3/include/KeyFrameDatabase.h
-  orb_slam3/include/Sim3Solver.h
-  orb_slam3/include/Viewer.h
-  orb_slam3/include/ImuTypes.h
-  orb_slam3/include/G2oTypes.h
-  orb_slam3/include/CameraModels/GeometricCamera.h
-  orb_slam3/include/CameraModels/Pinhole.h
-  orb_slam3/include/CameraModels/KannalaBrandt8.h
-  orb_slam3/include/OptimizableTypes.h
-  orb_slam3/include/MLPnPsolver.h
-  orb_slam3/include/GeometricTools.h
-  orb_slam3/include/TwoViewReconstruction.h
-  orb_slam3/include/SerializationUtils.h
-  orb_slam3/include/Config.h
-  orb_slam3/include/Settings.h
-)
-
-target_link_libraries(${PROJECT_NAME}
-  ${OpenCV_LIBS}
-  ${EIGEN3_LIBS}
-  ${Pangolin_LIBRARIES}
-  ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/DBoW2/lib/libDBoW2.so
-  ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/g2o/lib/libg2o.so
-  -lboost_system
-  -lboost_serialization
-  -lcrypto
-)
+link_directories(${ORB_SLAM3_LIBRARY_DIRS})
 
 ## ROS node
 add_executable(ros_mono
@@ -173,8 +104,9 @@ add_executable(ros_mono
   src/common.cc
 )
 target_link_libraries(ros_mono
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
 
 ## ROS node
@@ -183,8 +115,9 @@ add_executable(ros_mono_inertial
   src/common.cc
 )
 target_link_libraries(ros_mono_inertial 
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
 
 ## ROS node
@@ -193,8 +126,9 @@ add_executable(ros_stereo
   src/common.cc
 )
 target_link_libraries(ros_stereo
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
 
 ## ROS node
@@ -203,8 +137,9 @@ add_executable(ros_stereo_inertial
   src/common.cc
 )
 target_link_libraries(ros_stereo_inertial 
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
 
 ## ROS node
@@ -213,8 +148,9 @@ add_executable(ros_rgbd
   src/common.cc
 )
 target_link_libraries(ros_rgbd
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
 
 ## ROS node
@@ -223,9 +159,17 @@ add_executable(ros_rgbd_inertial
   src/common.cc
 )
 target_link_libraries(ros_rgbd_inertial
-  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  pangolin
+  ${ORB_SLAM3_LIBRARIES}
 )
+
+add_dependencies(ros_mono ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_mono_inertial  ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_stereo  ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_stereo_inertial ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_rgbd ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_rgbd_inertial ${catkin_EXPORTED_TARGETS})
 
 install(TARGETS ros_mono
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -246,22 +190,21 @@ install(TARGETS ros_rgbd_inertial
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}  # For static libraries (.a)
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}  # For shared libraries (.so)
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}  # For Windows DLLs (optional)
-)
-
 install(DIRECTORY launch/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
   PATTERN "*.launch"
   PATTERN ".git" EXCLUDE
 )
 
-install(FILES orb_slam3/Vocabulary/ORBvoc.txt.bin
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/orb_slam3/Vocabulary
-)
-
 install(DIRECTORY config/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
+
+install(CODE "
+  file(MAKE_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}/share/orb_slam3/Vocabulary\")
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
+    \"${ORB_SLAM3_VOCAB_PATH}\"
+    \"\${CMAKE_INSTALL_PREFIX}/share/orb_slam3/Vocabulary/ORBvoc.txt.bin\")
+  message(STATUS \"Created symlink to ORBvoc.txt.bin from ORB_SLAM3 package.\")
+")
+
