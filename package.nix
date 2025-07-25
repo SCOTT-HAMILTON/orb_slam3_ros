@@ -22,7 +22,7 @@ buildRosPackage {
   # NIX_CXXFLAGS_COMPILE = "-Og";
   NIX_CFLAGS_COMPILE = "-fsanitize=address -fno-omit-frame-pointer -O1 -g";
   NIX_CXXFLAGS_COMPILE = "-fsanitize=address -fno-omit-frame-pointer -O1 -g";
-  NIX_LDFLAGS = "-fsanitize=address";
+  # NIX_LDFLAGS = "-fsanitize=address";
 
 
   meta = {
