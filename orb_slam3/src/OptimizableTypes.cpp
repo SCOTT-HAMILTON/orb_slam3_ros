@@ -156,7 +156,8 @@ namespace ORB_SLAM3 {
                 -z , 0.f, x, 0.f, 1.f, 0.f,
                 y ,  -x , 0.f, 0.f, 0.f, 1.f;
 
-        _jacobianOplusXj = projectJac * SE3deriv;
+        Eigen::Matrix<double, 2, 6> temp_jacobian_product = projectJac * SE3deriv;
+        _jacobianOplusXj = temp_jacobian_product;
     }
 
     EdgeSE3ProjectXYZToBody::EdgeSE3ProjectXYZToBody() : BaseBinaryEdge<2, Eigen::Vector2d, g2o::VertexSBAPointXYZ, g2o::VertexSE3Expmap>() {
