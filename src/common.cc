@@ -254,7 +254,7 @@ void publish_kf_markers(std::vector<Sophus::SE3f> vKFposes, ros::Time msg_time)
     kf_markers.color.g = 1.0;
     kf_markers.color.a = 1.0;
 
-    for (int i = 0; i <= numKFs; i++)
+    for (int i = 0; i < numKFs; i++)
     {
         geometry_msgs::Point kf_marker;
         kf_marker.x = vKFposes[i].translation().x();
