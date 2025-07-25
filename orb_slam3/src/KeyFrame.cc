@@ -20,6 +20,7 @@
 #include "Converter.h"
 #include "ImuTypes.h"
 #include<mutex>
+#include <cassert>
 
 namespace ORB_SLAM3
 {
@@ -805,6 +806,10 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     }
 
     sort(vDepths.begin(),vDepths.end());
+
+    size_t index = (vDepths.size()-1)/q;
+    assert(index < vDepths.size() && "Computed index is too big for vDepths!");
+    assert(index >= 0 && "Computed index for vDepths is negative !");
 
     return vDepths[(vDepths.size()-1)/q];
 }
