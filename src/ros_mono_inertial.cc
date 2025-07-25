@@ -31,6 +31,8 @@ public:
     queue<sensor_msgs::ImageConstPtr> img0Buf;
     std::mutex mBufMutex;
     ImuGrabber *mpImuGb;
+
+    bool mStopSyncThread;
 };
 
 
@@ -83,8 +85,20 @@ int main(int argc, char **argv)
 
     ros::spin();
 
+
+    ROS_INFO("Ctrl-C detected. Signaling SyncWithImu thread to stop.");
+    igb.mStopSyncThread = true; // Set the flag to true
+    if (sync_thread.joinable()) { // Always check if a thread is joinable before joining
+        sync_thread.join(); // Wait for the sync_thread to finish
+        ROS_INFO("Sync thread successfully joined.");
+    }
+
+    // Stop all ORB-SLAM3 threads (this part was already correct)
+    ROS_INFO("Calling ORB-SLAM3 System Shutdown...");
     // Stop all threads
     pSLAM->Shutdown();
+    ROS_INFO("ORB-SLAM3 System shutdown complete.");
+
     ros::shutdown();
 
     return 0;
@@ -129,7 +143,7 @@ cv::Mat ImageGrabber::GetImage(const sensor_msgs::ImageConstPtr &img_msg)
 
 void ImageGrabber::SyncWithImu()
 {
-    while(1)
+    while(!mStopSyncThread)
     {
         if (!img0Buf.empty()&&!mpImuGb->imuBuf.empty())
         {
@@ -179,6 +193,7 @@ void ImageGrabber::SyncWithImu()
         std::chrono::milliseconds tSleep(1);
         std::this_thread::sleep_for(tSleep);
     }
+    ROS_INFO("ImageGrabber::SyncWithImu loop exiting gracefully."); // Optional: for debugging
 }
 
 void ImuGrabber::GrabImu(const sensor_msgs::ImuConstPtr &imu_msg)
